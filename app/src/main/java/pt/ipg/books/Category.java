@@ -1,5 +1,7 @@
 package pt.ipg.books;
 
+import android.content.ContentValues;
+
 public class Category {
     private int id;
     private String name;
