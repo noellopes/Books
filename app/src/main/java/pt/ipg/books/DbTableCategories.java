@@ -9,6 +9,8 @@ public class DbTableCategories implements BaseColumns {
     public static final String TABLE_NAME = "categories";
     private static final String FIELD_NAME = "name";
 
+    public static final String [] ALL_COLUMNS = new String[] { _ID, FIELD_NAME };
+
     private SQLiteDatabase db;
 
     public DbTableCategories(SQLiteDatabase db) {
@@ -31,6 +33,18 @@ public class DbTableCategories implements BaseColumns {
         values.put(FIELD_NAME, category.getName());
 
         return values;
+    }
+
+    public static Category getCurrentCategoryFromCursor(Cursor cursor) {
+        final int posId = cursor.getColumnIndex(_ID);
+        final int posName = cursor.getColumnIndex(FIELD_NAME);
+
+        Category category = new Category();
+
+        category.setId(cursor.getInt(posId));
+        category.setName(cursor.getString(posName));
+
+        return category;
     }
 
     /**

@@ -12,6 +12,8 @@ public class DbTableBooks implements BaseColumns {
     private static final String FIELD_PRICE = "price";
     private static final String FIELD_ID_CATEGORY = "idCategory";
 
+    public static final String [] ALL_COLUMNS = new String[] { _ID, FIELD_TITLE, FIELD_PRICE, FIELD_ID_CATEGORY };
+
     private SQLiteDatabase db;
 
     public DbTableBooks(SQLiteDatabase db) {
@@ -41,6 +43,22 @@ public class DbTableBooks implements BaseColumns {
         values.put(FIELD_ID_CATEGORY, book.getIdCategory());
 
         return values;
+    }
+
+    public static Book getCurrentBookFromCursor(Cursor cursor) {
+        final int posId = cursor.getColumnIndex(_ID);
+        final int posTitle = cursor.getColumnIndex(FIELD_TITLE);
+        final int posPrice = cursor.getColumnIndex(FIELD_PRICE);
+        final int posIdCategory = cursor.getColumnIndex(FIELD_ID_CATEGORY);
+
+        Book book = new Book();
+
+        book.setId(cursor.getInt(posId));
+        book.setTitle(cursor.getString(posTitle));
+        book.setPrice(cursor.getDouble(posPrice));
+        book.setIdCategory(cursor.getInt(posIdCategory));
+
+        return book;
     }
 
     /**
