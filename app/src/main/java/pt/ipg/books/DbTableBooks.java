@@ -42,7 +42,7 @@ public class DbTableBooks implements BaseColumns {
 
         return values;
     }
-    
+
     /**
      * Convenience method for inserting a row into the categories table.
      *
