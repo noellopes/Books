@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 public class DbTableBooks implements BaseColumns {
-    private static final String TABLE_NAME = "books";
+    public static final String TABLE_NAME = "books";
 
     private static final String FIELD_TITLE = "title";
     private static final String FIELD_PRICE = "price";

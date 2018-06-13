@@ -16,20 +16,26 @@ import android.support.annotation.Nullable;
 import java.text.BreakIterator;
 
 public class BooksContentProvider extends ContentProvider {
+    private static final String AUTHORITY = "pt.ipg.books";
+
     private static final int BOOKS = 100;
     private static final int BOOKS_ID = 101;
     private static final int CATEGORIES = 200;
     private static final int CATEGORIES_ID = 201;
+
+    private static final String MULTIPLE_ITEMS = "vnd.android.cursor.dir";
+    private static final String SINGLE_ITEM = "vnd.android.cursor.item";
+
     DbBooksOpenHelper booksOpenHelper;
 
     private static UriMatcher getBooksUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        uriMatcher.addURI("pt.ipg.books", "books", BOOKS);
-        uriMatcher.addURI("pt.ipg.books", "books/#", BOOKS_ID);
+        uriMatcher.addURI(AUTHORITY, "books", BOOKS);
+        uriMatcher.addURI(AUTHORITY, "books/#", BOOKS_ID);
 
-        uriMatcher.addURI("pt.ipg.books", "categories", CATEGORIES);
-        uriMatcher.addURI("pt.ipg.books", "categories/#", CATEGORIES_ID);
+        uriMatcher.addURI(AUTHORITY, "categories", CATEGORIES);
+        uriMatcher.addURI(AUTHORITY, "categories/#", CATEGORIES_ID);
 
         return uriMatcher;
     }
@@ -175,7 +181,24 @@ public class BooksContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        UriMatcher matcher = getBooksUriMatcher();
+
+        switch (matcher.match(uri)) {
+            case BOOKS:
+                return MULTIPLE_ITEMS + "/" + AUTHORITY + "/" + DbTableBooks.TABLE_NAME;
+
+            case CATEGORIES:
+                return MULTIPLE_ITEMS + "/" + AUTHORITY + "/" + DbTableCategories.TABLE_NAME;
+
+            case BOOKS_ID:
+                return SINGLE_ITEM + "/" + AUTHORITY + "/" + DbTableBooks.TABLE_NAME;
+
+            case CATEGORIES_ID:
+                return SINGLE_ITEM  + "/" + AUTHORITY + "/" + DbTableCategories.TABLE_NAME;
+
+            default:
+                throw new UnsupportedOperationException("Unknown URI: " + uri);
+        }
     }
 
     /**
