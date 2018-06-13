@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class BooksContentProvider extends ContentProvider {
+    DbBooksOpenHelper booksOpenHelper;
+
     /**
      * Implement this to initialize your content provider on startup.
      * This method is called for all registered content providers on the
@@ -38,7 +40,9 @@ public class BooksContentProvider extends ContentProvider {
      */
     @Override
     public boolean onCreate() {
-        return false;
+        booksOpenHelper = new DbBooksOpenHelper(getContext());
+
+        return true;
     }
 
     /**
