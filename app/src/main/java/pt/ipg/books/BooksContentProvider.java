@@ -5,15 +5,12 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.ContentObserver;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
-import java.text.BreakIterator;
 
 public class BooksContentProvider extends ContentProvider {
     private static final int BOOKS = 100;
@@ -194,35 +191,7 @@ public class BooksContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        SQLiteDatabase db = booksOpenHelper.getWritableDatabase();
-
-        UriMatcher matcher = getBooksUriMatcher();
-
-        long id = -1;
-
-        switch (matcher.match(uri)) {
-            case BOOKS:
-                id = new DbTableBooks(db).insert(values);
-                break;
-
-            case CATEGORIES:
-                id = new DbTableCategories(db).insert(values);
-                break;
-
-            default:
-                throw new UnsupportedOperationException("Invalid URI: " + uri);
-        }
-
-        if (id > 0) {
-            notifyChanges(uri);
-            return Uri.withAppendedPath(uri, Long.toString(id));
-        } else {
-            throw new SQLException("Could not insert record");
-        }
-    }
-
-    private void notifyChanges(@NonNull Uri uri) {
-        getContext().getContentResolver().notifyChange(uri, null);
+        return null;
     }
 
     /**
