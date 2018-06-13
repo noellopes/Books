@@ -2,8 +2,10 @@ package pt.ipg.books;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.ContentObserver;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Build;
@@ -11,7 +13,24 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 public class BooksContentProvider extends ContentProvider {
+    private static final int BOOKS = 100;
+    private static final int BOOKS_ID = 101;
+    private static final int CATEGORIES = 200;
+    private static final int CATEGORIES_ID = 201;
     DbBooksOpenHelper booksOpenHelper;
+
+    private static UriMatcher getBooksUriMatcher() {
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+        uriMatcher.addURI("pt.ipg.books", "books", BOOKS);
+        uriMatcher.addURI("pt.ipg.books", "books/#", BOOKS_ID);
+
+        uriMatcher.addURI("pt.ipg.books", "categories", CATEGORIES);
+        uriMatcher.addURI("pt.ipg.books", "categories/#", CATEGORIES_ID);
+
+        return uriMatcher;
+    }
+
 
     /**
      * Implement this to initialize your content provider on startup.
@@ -108,7 +127,28 @@ public class BooksContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        SQLiteDatabase db = booksOpenHelper.getReadableDatabase();
+
+        String id = uri.getLastPathSegment();
+
+        UriMatcher matcher = getBooksUriMatcher();
+
+        switch (matcher.match(uri)) {
+            case BOOKS:
+                return new DbTableBooks(db).query(projection, selection, selectionArgs, null, null, sortOrder);
+
+            case CATEGORIES:
+                return new DbTableCategories(db).query(projection, selection, selectionArgs, null, null, sortOrder);
+
+            case BOOKS_ID:
+                return new DbTableBooks(db).query(projection, DbTableBooks._ID + "=?", new String[] { id }, null, null, null);
+
+            case CATEGORIES_ID:
+                return new DbTableCategories(db).query(projection, DbTableCategories._ID + "=?", new String[] { id }, null, null, null);
+
+            default:
+                throw new UnsupportedOperationException("Invalid URI: " + uri);
+        }
     }
 
     /**
