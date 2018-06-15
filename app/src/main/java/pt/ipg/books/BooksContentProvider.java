@@ -18,6 +18,9 @@ import java.text.BreakIterator;
 public class BooksContentProvider extends ContentProvider {
     private static final String AUTHORITY = "pt.ipg.books";
 
+    public static final Uri BASE_URI = Uri.parse("content://" + AUTHORITY);
+    public static final Uri BOOKS_URI = Uri.withAppendedPath(BASE_URI, DbTableBooks.TABLE_NAME);
+
     private static final int BOOKS = 100;
     private static final int BOOKS_ID = 101;
     private static final int CATEGORIES = 200;
