@@ -37,7 +37,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         booksCursorAdapter = new BooksCursorAdapter(this);
         recyclerViewBooks.setAdapter(booksCursorAdapter);
 
-        getLoaderManager().initLoader(BOOKS_CURSOR_LOADER_ID, null, (android.app.LoaderManager.LoaderCallbacks<Cursor>) this);
+        getSupportLoaderManager().initLoader(BOOKS_CURSOR_LOADER_ID, null, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(BOOKS_CURSOR_LOADER_ID, null, this);
     }
 
     @Override
