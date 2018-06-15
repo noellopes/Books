@@ -1,12 +1,19 @@
 package pt.ipg.books;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class BooksCursorAdapter extends RecyclerView.Adapter<BooksCursorAdapter.BookViewHolder> {
+    private Context context;
+
+    public BooksCursorAdapter(Context context) {
+        this.context = context;
+    }
 
     /**
      * Called when RecyclerView needs a new {@link ViewHolder} of the given type to represent
@@ -31,7 +38,9 @@ public class BooksCursorAdapter extends RecyclerView.Adapter<BooksCursorAdapter.
     @NonNull
     @Override
     public BookViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View item = LayoutInflater.from(context).inflate(R.layout.item_book, parent, false);
+
+        return new BookViewHolder(item);
     }
 
     /**
