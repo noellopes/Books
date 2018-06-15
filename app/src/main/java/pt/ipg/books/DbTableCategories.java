@@ -29,7 +29,6 @@ public class DbTableCategories implements BaseColumns {
     public static ContentValues getContentValues(Category category) {
         ContentValues values = new ContentValues();
 
-        values.put(_ID, category.getId());
         values.put(FIELD_NAME, category.getName());
 
         return values;

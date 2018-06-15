@@ -37,7 +37,6 @@ public class DbTableBooks implements BaseColumns {
     public static ContentValues getContentValues(Book book) {
         ContentValues values = new ContentValues();
 
-        values.put(_ID, book.getId());
         values.put(FIELD_TITLE, book.getTitle());
         values.put(FIELD_PRICE, book.getPrice());
         values.put(FIELD_ID_CATEGORY, book.getIdCategory());
@@ -133,6 +132,7 @@ public class DbTableBooks implements BaseColumns {
      * @see Cursor
      */
     public Cursor query (String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
-        return db.query(TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
+        Cursor cursor = db.query(TABLE_NAME, columns, selection, selectionArgs, groupBy, having, orderBy);
+        return cursor;
     }
 }
