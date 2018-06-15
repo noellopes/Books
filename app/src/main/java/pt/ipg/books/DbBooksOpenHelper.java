@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbBooksOpenHelper extends SQLiteOpenHelper {
+    private static final boolean PRODUCTION = false;
+
     public static final String DATABASE_NAME = "books.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -33,6 +35,38 @@ public class DbBooksOpenHelper extends SQLiteOpenHelper {
 
         DbTableBooks dbTableBooks = new DbTableBooks(db);
         dbTableBooks.create();
+
+        if (!PRODUCTION) {
+            seed(db);
+        }
+    }
+
+    private void seed(SQLiteDatabase db) {
+        DbTableCategories dbTableCategories = new DbTableCategories(db);
+
+        Category category = new Category();
+        category.setName("Drama");
+        int idCategory = (int) dbTableCategories.insert(DbTableCategories.getContentValues(category));
+
+        DbTableBooks dbTableBooks = new DbTableBooks(db);
+
+        Book book = new Book();
+        book.setTitle("A midsummer night's dream");
+        book.setIdCategory(idCategory);
+        book.setPrice(9.99);
+        dbTableBooks.insert(DbTableBooks.getContentValues(book));
+
+        book = new Book();
+        book.setTitle("Hamlet");
+        book.setIdCategory(idCategory);
+        book.setPrice(11.99);
+        dbTableBooks.insert(DbTableBooks.getContentValues(book));
+
+        book = new Book();
+        book.setTitle("Macbeth");
+        book.setIdCategory(idCategory);
+        book.setPrice(5.99);
+        dbTableBooks.insert(DbTableBooks.getContentValues(book));
     }
 
     /**
