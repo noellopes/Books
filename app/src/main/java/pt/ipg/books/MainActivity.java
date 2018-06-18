@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int BOOKS_CURSOR_LOADER_ID = 0;
-    private static final String BOOK_ID = "BOOK_ID";
+    public static final String BOOK_ID = "BOOK_ID";
 
     private BooksCursorAdapter booksCursorAdapter;
     private RecyclerView recyclerViewBooks;

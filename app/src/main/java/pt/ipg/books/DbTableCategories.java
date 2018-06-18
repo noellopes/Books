@@ -7,7 +7,7 @@ import android.provider.BaseColumns;
 
 public class DbTableCategories implements BaseColumns {
     public static final String TABLE_NAME = "categories";
-    private static final String FIELD_NAME = "name";
+    public static final String FIELD_NAME = "name";
 
     public static final String [] ALL_COLUMNS = new String[] { _ID, FIELD_NAME };
 

@@ -46,25 +46,33 @@ public class DbBooksOpenHelper extends SQLiteOpenHelper {
 
         Category category = new Category();
         category.setName("Drama");
-        int idCategory = (int) dbTableCategories.insert(DbTableCategories.getContentValues(category));
+        int idCategoryDrama = (int) dbTableCategories.insert(DbTableCategories.getContentValues(category));
+
+        category = new Category();
+        category.setName("Romance");
+        int idCategoryRomance = (int) dbTableCategories.insert(DbTableCategories.getContentValues(category));
+
+        category = new Category();
+        category.setName("Comedy");
+        dbTableCategories.insert(DbTableCategories.getContentValues(category));
 
         DbTableBooks dbTableBooks = new DbTableBooks(db);
 
         Book book = new Book();
         book.setTitle("A midsummer night's dream");
-        book.setIdCategory(idCategory);
+        book.setIdCategory(idCategoryRomance);
         book.setPrice(9.99);
         dbTableBooks.insert(DbTableBooks.getContentValues(book));
 
         book = new Book();
         book.setTitle("Hamlet");
-        book.setIdCategory(idCategory);
+        book.setIdCategory(idCategoryDrama);
         book.setPrice(11.99);
         dbTableBooks.insert(DbTableBooks.getContentValues(book));
 
         book = new Book();
         book.setTitle("Macbeth");
-        book.setIdCategory(idCategory);
+        book.setIdCategory(idCategoryDrama);
         book.setPrice(5.99);
         dbTableBooks.insert(DbTableBooks.getContentValues(book));
     }
