@@ -19,12 +19,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <provider
-            android:authorities="pt.ipg.books"
             android:name=".BooksContentProvider"
-            android:exported="false"
-            />
+            android:authorities="pt.ipg.books"
+            android:exported="false" />
+
+        <activity
+            android:name=".EditBookActivity"
+            android:label="@string/title_activity_edit_book"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pt.ipg.books.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

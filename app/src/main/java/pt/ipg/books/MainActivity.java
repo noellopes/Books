@@ -1,6 +1,7 @@
 package pt.ipg.books;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,11 +19,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CursorAdapter;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int BOOKS_CURSOR_LOADER_ID = 0;
+    private static final String BOOK_ID = "BOOK_ID";
 
     private BooksCursorAdapter booksCursorAdapter;
+    private RecyclerView recyclerViewBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +35,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RecyclerView recyclerViewBooks = (RecyclerView) findViewById(R.id.recyclerViewBooks);
+        recyclerViewBooks = (RecyclerView) findViewById(R.id.recyclerViewBooks);
 
         recyclerViewBooks.setLayoutManager(new LinearLayoutManager(this));
         booksCursorAdapter = new BooksCursorAdapter(this);
         recyclerViewBooks.setAdapter(booksCursorAdapter);
 
+        booksCursorAdapter.setViewHolderClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editBook();
+            }
+        });
+
         getSupportLoaderManager().initLoader(BOOKS_CURSOR_LOADER_ID, null, this);
+    }
+
+    private void editBook() {
+        int id = booksCursorAdapter.getLastBookClicked();
+
+        Intent intent = new Intent(this, EditBookActivity.class);
+
+        intent.putExtra(BOOK_ID, id);
+
+        startActivity(intent);
     }
 
     @Override

@@ -13,6 +13,8 @@ import android.widget.TextView;
 public class BooksCursorAdapter extends RecyclerView.Adapter<BooksCursorAdapter.BookViewHolder> {
     private Context context;
     private Cursor cursor = null;
+    private View.OnClickListener viewHolderClickListener = null;
+    private int lastBookClicked = -1;
 
     public BooksCursorAdapter(Context context) {
         this.context = context;
@@ -23,6 +25,14 @@ public class BooksCursorAdapter extends RecyclerView.Adapter<BooksCursorAdapter.
             this.cursor = cursor;
             notifyDataSetChanged();
         }
+    }
+
+    public void setViewHolderClickListener(View.OnClickListener viewHolderClickListener) {
+        this.viewHolderClickListener = viewHolderClickListener;
+    }
+
+    public int getLastBookClicked() {
+        return lastBookClicked;
     }
 
     /**
@@ -92,20 +102,43 @@ public class BooksCursorAdapter extends RecyclerView.Adapter<BooksCursorAdapter.
         return cursor.getCount();
     }
 
-    public class BookViewHolder extends RecyclerView.ViewHolder {
+    public class BookViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView textViewTitle;
         private TextView textViewPrice;
+        private int bookId;
 
         public BookViewHolder(View itemView) {
             super(itemView);
 
             textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
             textViewPrice = (TextView) itemView.findViewById(R.id.textViewPrice);
+
+            itemView.setOnClickListener(this);
         }
 
         public void setBook(Book book) {
             textViewTitle.setText(book.getTitle());
             textViewPrice.setText(String.format("%.2f", book.getPrice()) + "€");
+            bookId = book.getId();
+        }
+
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+
+            if (position == RecyclerView.NO_POSITION) {
+                return;
+            }
+
+            if (viewHolderClickListener != null) {
+                lastBookClicked = bookId;
+                viewHolderClickListener.onClick(v);
+            }
         }
     }
 }
