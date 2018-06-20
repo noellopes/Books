@@ -103,6 +103,7 @@ public class EditBookActivity extends AppCompatActivity implements LoaderManager
         if (recordsAffected > 0) {
             Toast.makeText(this, "Book saved successfully", Toast.LENGTH_LONG).show();
             finish();
+            return;
         }
 
         Toast.makeText(this, "Could not save book", Toast.LENGTH_LONG).show();
